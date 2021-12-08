@@ -2,21 +2,21 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 
-const Project = require("../models/Project.model");
+const Business = require("../models/Business.model");
 const Task = require("../models/Task.model");
 
 //  POST /api/projects  -  Creates a new project
 router.post("/projects", (req, res, next) => {
   const { title, description } = req.body;
 
-  Project.create({ title, description, tasks: [] })
+  Business.create({ title, description, tasks: [] })
     .then((response) => res.json(response))
     .catch((err) => res.json(err));
 });
 
 //  GET /api/projects -  Retrieves all of the projects
 router.get("/projects", (req, res, next) => {
-  Project.find()
+  Business.find()
     .populate("tasks")
     .then((allProjects) => res.json(allProjects))
     .catch((err) => res.json(err));
@@ -33,7 +33,7 @@ router.get("/projects/:projectId", (req, res, next) => {
 
   // Each Project document has `tasks` array holding `_id`s of Task documents
   // We use .populate() method to get swap the `_id`s for the actual Task documents
-  Project.findById(projectId)
+  Business.findById(projectId)
     .populate("tasks")
     .then((project) => res.status(200).json(project))
     .catch((error) => res.json(error));
