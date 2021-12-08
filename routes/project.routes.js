@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 
 const Business = require("../models/Business.model");
-const Task = require("../models/Task.model");
+const Task = require("../models/Reservation.model");
 
 //  POST /api/projects  -  Creates a new project
 router.post("/projects", (req, res, next) => {
