@@ -2,10 +2,9 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 
-const Task = require("../models/Reservation.model");
-const Project = require("../models/Business.model");
+const Reservation = require("../models/Reservation.model");
 
-//  POST /api/tasks  -  Creates a new task
+//  POST /reservations  -  Gets all the reservations a new task
 router.post("/tasks", (req, res, next) => {
   const { title, description, projectId } = req.body;
 

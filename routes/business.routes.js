@@ -82,4 +82,8 @@ router.put("/:id/delete", (req, res, next) => {
     .catch((error) => res.json(error));
 });
 
+router.get('/:id/reservations', (req, res)=>{
+  
+})
+
 module.exports = router;
