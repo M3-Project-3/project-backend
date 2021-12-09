@@ -5,6 +5,7 @@ const businessSchema = new Schema(
   {
   name: {type: String},
   email: { type: String, unique: true, required: true },
+  password: { type: String, required: true },
   address: {type: String},
   resType: {type: String},
   foodType: {type: String},
