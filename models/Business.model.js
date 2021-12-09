@@ -5,6 +5,7 @@ const businessSchema = new Schema(
   {
   name: {type: String},
   email: { type: String, unique: true, required: true },
+  password: { type: String, required: true },
   address: {type: String},
   resType: {type: String},
   foodType: {type: String},
@@ -20,7 +21,8 @@ const businessSchema = new Schema(
     default:
       "",
   }],
-  userType: {type: String, default: "business"}
+  userType: {type: String, default: "business"},
+  isProfileComplete: {type: Boolean, default: false}
   
   // owner will be added later on
 });

@@ -19,6 +19,9 @@ app.use("/business", isAuthenticated, businessRouter);
 const authRouter = require("./routes/auth.routes");
 app.use("/auth", authRouter);
 
+const userRouter = require("./routes/user.routes");
+app.use("/user",isAuthenticated, userRouter)
+
 require("./error-handling")(app);
 
 module.exports = app;
