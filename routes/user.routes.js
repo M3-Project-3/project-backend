@@ -87,7 +87,7 @@ router.put("/:userId/edit", (req,res)=>{
     User.findByIdAndUpdate(userId, {name, surname}, {new:true})
     .then((updatedUser)=> {
         res.json(updatedUser)
-        console.log(updatedUser)
+        
     })
     .catch((error)=>res.json(error))
 })
@@ -107,7 +107,6 @@ router.get("/:userId", (req,res)=>{
     .findById(userId)
     .populate("favourites")
     .then((user) => {
-        console.log(user)
         res.json(user)})
     .catch((error) => res.json(error));
 
