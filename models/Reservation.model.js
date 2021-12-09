@@ -2,12 +2,12 @@ const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
 const reservationSchema = new Schema({
-  date: {type: String},
+  day: {type: String},
   hour: [{type: String}],
   user: { type: Schema.Types.ObjectId, ref: "User" },
   business: { type: Schema.Types.ObjectId, ref: "Business" },
   tables: {type: Number},
-  status: {type: String}
+  status: {type: String, default: "pending"}
 
 });
 
