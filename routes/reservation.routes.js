@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 const Reservation = require("../models/Reservation.model");
 
-//  POST /reservations  -  Set the status of a reservation based on input of the restaurant
+//  PUT /reservations  -  Set the status of a reservation based on input of the restaurant
 router.put("/:resId/status", (req, res, next) => {
   const { resId } = req.params;
   const {status} = req.body

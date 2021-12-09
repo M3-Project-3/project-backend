@@ -143,10 +143,4 @@ router.get("/:userId", (req,res)=>{
 })
 
 
-
-
-
-
- 
-
 module.exports = router;

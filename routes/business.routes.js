@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 
 const Business = require("../models/Business.model");
 const Reservations = require("../models/Reservation.model");
+const { isAuthenticated } = require("../middleware/jwt.middleware");
+
 
 //  POST /business/id/create  -  Creates a new business
 router.post("/:id/create", (req, res, next) => {
