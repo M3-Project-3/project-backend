@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 
 const Business = require("../models/Business.model");
+const Reservations = require("../models/Reservation.model");
 
 //  POST /business/id/create  -  Creates a new business
 router.post("/:id/create", (req, res, next) => {
@@ -66,7 +67,6 @@ router.get("/:id/details", (req, res, next) => {
 // PUT  /:id/disable  -  Disables a specific business by id
 router.put("/:id/delete", (req, res, next) => {
   const { id } = req.params;
-  console.log("------------",id)
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     res.status(400).json({ message: "Specified id is not valid" });
@@ -81,5 +81,34 @@ router.put("/:id/delete", (req, res, next) => {
     )
     .catch((error) => res.json(error));
 });
+// Get all reservations from a business
+router.get('/:id/reservations', (req, res)=>{
+  const {id} = req.params
+  console.log("---------id",id)
+
+  Reservations.find({business: id}).populate("business")
+  .then((businessReservations)=>{res
+      .status(200)
+      .json(
+        {
+          data: businessReservations,
+          message: "Reservations info loaded successfully",
+          error: null,
+          pagination: null
+        }
+      )
+  })
+  .catch((error)=>{res
+    .status(200)
+    .json(
+      {
+        data: null,
+        message: "Something went wrong",
+        error: error,
+        pagination: null
+      }
+    )
+  });
+})
 
 module.exports = router;

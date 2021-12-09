@@ -2,21 +2,36 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 
-const Task = require("../models/Reservation.model");
-const Project = require("../models/Business.model");
+const Reservation = require("../models/Reservation.model");
 
-//  POST /api/tasks  -  Creates a new task
-router.post("/tasks", (req, res, next) => {
-  const { title, description, projectId } = req.body;
+//  POST /reservations  -  Set the status of a reservation based on input of the restaurant
+router.put("/:resId/status", (req, res, next) => {
+  const { resId } = req.params;
+  const {status} = req.body
 
-  Task.create({ title, description, project: projectId })
-    .then((newTask) => {
-      return Project.findByIdAndUpdate(projectId, {
-        $push: { tasks: newTask._id },
-      });
-    })
-    .then((response) => res.json(response))
-    .catch((err) => res.json(err));
+  Reservation.findByIdAndUpdate(resId, { status: status})
+  .then((newStatus)=>{res
+    .status(200)
+    .json(
+      {
+        data: newStatus,
+        message: "Status updated successfully",
+        error: null,
+        pagination: null
+      }
+    )
+  })
+  .catch((error)=>{res
+    .status(200)
+    .json(
+      {
+        data: null,
+        message: "Something went wrong",
+        error: error,
+        pagination: null
+      }
+    )
+  });
 });
 
 //  GET /api/tasks/:taskId  - Retrieves a specific task by id

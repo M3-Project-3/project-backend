@@ -7,7 +7,7 @@ const reservationSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: "User" },
   business: { type: Schema.Types.ObjectId, ref: "Business" },
   tables: {type: Number},
-  status: {type: String}
+  status: {type: String, default: "pending"}
 
 });
 
