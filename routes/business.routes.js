@@ -111,4 +111,32 @@ router.get('/:id/reservations', (req, res)=>{
   });
 })
 
+//  GET /business/  -  Get all businesses
+router.get("/", (req, res, next) => {
+  
+  Business.find()
+    .then((businesses)=>{res
+      .status(200)
+      .json(
+        {
+          data: businesses,
+          message: "All businesses info retrieved successfully",
+          error: null,
+          pagination: null
+        }
+      )
+    })
+    .catch((error)=>{res
+      .status(200)
+      .json(
+        {
+          data: null,
+          message: "Something went wrong",
+          error: error,
+          pagination: null
+        }
+      )
+    });
+});
+
 module.exports = router;
