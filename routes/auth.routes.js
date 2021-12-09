@@ -162,7 +162,7 @@ router.post("/business/signup", (req, res, next) => {
     // Check the business collection if a business with the same email already exists
     Business.findOne({ email })
     .then((foundBusiness) => {
-    // If the user with the same email already exists, send an error response
+    // If a business with the same email already exists, send an error response
     if (foundBusiness) {
       res.status(400).json({ message: "Restaurant already exists." });
       return;
