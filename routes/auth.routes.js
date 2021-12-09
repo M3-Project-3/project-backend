@@ -182,7 +182,7 @@ router.post("/business/signup", (req, res, next) => {
     const { email, name, _id } = createdBusiness;
 
     // Create a new object that doesn't expose the password
-    const Business = { email, name, _id };
+    const business = { email, name, _id };
 
     // Send a json response containing the business object
     res.status(201).json({ business: business });

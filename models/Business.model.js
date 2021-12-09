@@ -27,4 +27,4 @@ const businessSchema = new Schema(
   // owner will be added later on
 });
 
-module.exports = model("Project", businessSchema);
+module.exports = model("Business", businessSchema);
