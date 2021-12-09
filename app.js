@@ -23,7 +23,7 @@ const userRouter = require("./routes/user.routes");
 app.use("/user", userRouter)
 
 const reservationRoute = require("./routes/reservation.routes");
-app.use("/reservations", isAuthenticated, reservationRoute)
+app.use("/reservations", reservationRoute)
 
 require("./error-handling")(app);
 
