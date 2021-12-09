@@ -4,21 +4,62 @@ const mongoose = require("mongoose");
 
 const Business = require("../models/Business.model");
 
-//  POST /api/business/create  -  Creates a new business
-router.post("/business/create", (req, res, next) => {
-  const { title, description } = req.body;
-
-  Business.create({ title, description, tasks: [] })
-    .then((response) => res.json(response))
-    .catch((err) => res.json(err));
+//  POST /business/id/create  -  Creates a new business
+router.post("/:id/create", (req, res, next) => {
+  const { name, address, resType, foodType, menuStarters, menuMain, menuDeserts, priceRange, timetable, tables, pictures  } = req.body;
+  const {id} = req.params
+  Business.findByIdAndUpdate(id, { name, address, resType, foodType, menuStarters, menuMain, menuDeserts, priceRange, timetable, tables, pictures ,isProfileComplete: true }, {new:true})
+    .then((restaurant)=>{res
+      .status(200)
+      .json(
+        {
+          data: restaurant,
+          message: "Restaurant info updated successfully",
+          error: null,
+          pagination: null
+        }
+      )
+    })
+    .catch((error)=>{res
+      .status(200)
+      .json(
+        {
+          data: null,
+          message: "Something went wrong",
+          error: error,
+          pagination: null
+        }
+      )
+    });
 });
 
-//  GET /api/projects -  Retrieves all of the projects
-router.get("/projects", (req, res, next) => {
-  Business.find()
-    .populate("tasks")
-    .then((allProjects) => res.json(allProjects))
-    .catch((err) => res.json(err));
+//  GET /business/id/details -  Retrieves all of the projects
+router.get("/:id/details", (req, res, next) => {
+  const {id} = req.params
+  
+  Business.findById(id)
+    .then((restaurantDetails)=>{res
+      .status(200)
+      .json(
+        {
+          data: restaurantDetails,
+          message: "Restaurant info loaded successfully",
+          error: null,
+          pagination: null
+        }
+      )
+    })
+    .catch((error)=>{res
+      .status(200)
+      .json(
+        {
+          data: null,
+          message: "Something went wrong",
+          error: error,
+          pagination: null
+        }
+      )
+    });
 });
 
 //  GET /api/projects/:projectId -  Retrieves a specific project by id

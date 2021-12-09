@@ -14,7 +14,7 @@ const allRoutes = require("./routes");
 app.use("/api", allRoutes);
 
 const businessRouter = require("./routes/business.routes");
-app.use("/business", isAuthenticated, businessRouter);
+app.use("/business", businessRouter);
 
 const authRouter = require("./routes/auth.routes");
 app.use("/auth", authRouter);
