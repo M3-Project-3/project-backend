@@ -21,7 +21,8 @@ const businessSchema = new Schema(
     default:
       "",
   }],
-  userType: {type: String, default: "business"}
+  userType: {type: String, default: "business"},
+  isProfileComplete: {type: Boolean, default: false}
   
   // owner will be added later on
 });
