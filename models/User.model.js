@@ -6,7 +6,7 @@ const userSchema = new Schema({
   surname: {type: String, required: true},
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
-  favorites: [{ type: Schema.Types.ObjectId, ref: "Business" }],
+  favourites: [{ type: Schema.Types.ObjectId, ref: "Business" }],
   picture: {
     type: String,
     default:

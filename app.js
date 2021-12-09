@@ -20,7 +20,7 @@ const authRouter = require("./routes/auth.routes");
 app.use("/auth", authRouter);
 
 const userRouter = require("./routes/user.routes");
-app.use("/user",isAuthenticated, userRouter)
+app.use("/user", userRouter)
 
 require("./error-handling")(app);
 

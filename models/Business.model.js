@@ -24,7 +24,6 @@ const businessSchema = new Schema(
   userType: {type: String, default: "business"},
   isProfileComplete: {type: Boolean, default: false}
   
-  // owner will be added later on
 });
 
-module.exports = model("Project", businessSchema);
+module.exports = model("Business", businessSchema);
