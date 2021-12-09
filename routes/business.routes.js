@@ -3,10 +3,9 @@ const router = express.Router();
 const mongoose = require("mongoose");
 
 const Business = require("../models/Business.model");
-const Task = require("../models/Task.model");
 
-//  POST /api/projects  -  Creates a new project
-router.post("/projects", (req, res, next) => {
+//  POST /api/business/create  -  Creates a new business
+router.post("/business/create", (req, res, next) => {
   const { title, description } = req.body;
 
   Business.create({ title, description, tasks: [] })
