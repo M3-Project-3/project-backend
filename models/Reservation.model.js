@@ -6,7 +6,7 @@ const reservationSchema = new Schema({
   hour: [{type: String}],
   user: { type: Schema.Types.ObjectId, ref: "User" },
   business: { type: Schema.Types.ObjectId, ref: "Business" },
-  tables: {type: Number},
+  people: {type: Number},
   status: {type: String, default: "pending"}
 
 });
