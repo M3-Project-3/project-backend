@@ -3,44 +3,54 @@ const router = express.Router();
 const mongoose = require("mongoose");
 
 const Reservation = require("../models/Reservation.model");
-const User = require("../models/User.model")
-const Business = require("../models/Business.model")
+
 
 //  PUT /reservations  -  Set the status of a reservation based on input of the restaurant
-router.put("/:resId/status", (req, res, next) => {
-  const { resId } = req.params;
-  const {status} = req.body
+router.route("/:id")
+  .get((req, res)=>{
+    const { id } = req.params;
 
-  Reservation.findByIdAndUpdate(resId, { status: status})
-  .then((newStatus)=>{res
-    .status(200)
-    .json(
-      {
-        data: newStatus,
-        message: "Status updated successfully",
-        error: null,
-        pagination: null
-      }
-    )
+    Reservation.findById(id)
+      .then((reservation) => res.json(reservation))
+      .catch((error) => res.json(error));
+
   })
-  .catch((error)=>{res
-    .status(200)
-    .json(
-      {
-        data: null,
-        message: "Something went wrong",
-        error: error,
-        pagination: null
-      }
-    )
+
+  .put( (req, res, next) => {
+    const { id } = req.params;
+    const {status} = req.body
+
+    Reservation.findByIdAndUpdate(id, { status: status})
+    .then((newStatus)=>{res
+      .status(200)
+      .json(
+        {
+          data: newStatus,
+          message: "Status updated successfully",
+          error: null,
+          pagination: null
+        }
+      )
+    })
+    .catch((error)=>{res
+      .status(200)
+      .json(
+        {
+          data: null,
+          message: "Something went wrong",
+          error: error,
+          pagination: null
+        }
+      )
+    });
   });
-});
+
 
 router.post("/:businessId/new", (req, res)=>{
-  const {name, surname, day, hour, people, userId, status} = req.body
+  const {name, surname, date, hour, people, userId} = req.body
   const {businessId} = req.params
 
-  Reservation.create({name, surname, day, hour, people, userId, businessId, status})
+  Reservation.create({name, surname, date,  hour, people, userId, businessId})
   .then(newReservation => res
     .status(200)
     .json(
@@ -58,6 +68,8 @@ router.post("/:businessId/new", (req, res)=>{
       error: error
     }))
 })
+
+
 
 
 //  GET /api/tasks/:taskId  - Retrieves a specific task by id
