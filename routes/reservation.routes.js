@@ -6,34 +6,45 @@ const Reservation = require("../models/Reservation.model");
 
 
 //  PUT /reservations  -  Set the status of a reservation based on input of the restaurant
-router.put("/:id/status", (req, res, next) => {
-  const { id } = req.params;
-  const {status} = req.body
+router.route("/:id")
+  .get((req, res)=>{
+    const { id } = req.params;
 
-  Reservation.findByIdAndUpdate(id, { status: status})
-  .then((newStatus)=>{res
-    .status(200)
-    .json(
-      {
-        data: newStatus,
-        message: "Status updated successfully",
-        error: null,
-        pagination: null
-      }
-    )
+    Reservation.findById(id)
+      .then((reservation) => res.json(reservation))
+      .catch((error) => res.json(error));
+
   })
-  .catch((error)=>{res
-    .status(200)
-    .json(
-      {
-        data: null,
-        message: "Something went wrong",
-        error: error,
-        pagination: null
-      }
-    )
+
+  .put( (req, res, next) => {
+    const { id } = req.params;
+    const {status} = req.body
+
+    Reservation.findByIdAndUpdate(id, { status: status})
+    .then((newStatus)=>{res
+      .status(200)
+      .json(
+        {
+          data: newStatus,
+          message: "Status updated successfully",
+          error: null,
+          pagination: null
+        }
+      )
+    })
+    .catch((error)=>{res
+      .status(200)
+      .json(
+        {
+          data: null,
+          message: "Something went wrong",
+          error: error,
+          pagination: null
+        }
+      )
+    });
   });
-});
+
 
 router.post("/:businessId/new", (req, res)=>{
   const {name, surname, day, hour, people, userId, status} = req.body
@@ -58,14 +69,7 @@ router.post("/:businessId/new", (req, res)=>{
     }))
 })
 
-router.get("/:id", (req, res)=>{
-  const { id } = req.params;
 
-  Reservation.findById(id)
-    .then((reservation) => res.json(reservation))
-    .catch((error) => res.json(error));
-
-})
 
 
 //  GET /api/tasks/:taskId  - Retrieves a specific task by id
