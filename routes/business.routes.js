@@ -102,7 +102,7 @@ router.put("/:id/delete", (req, res, next) => {
 // Get all reservations from a business
 router.get("/:id/reservations", (req, res) => {
   const { id } = req.params;
-  console.log("---------id", id);
+
 
   Reservations.find({ business: id })
     .populate("business")
