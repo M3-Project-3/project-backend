@@ -3,6 +3,8 @@ const router = express.Router();
 const mongoose = require("mongoose");
 
 const Reservation = require("../models/Reservation.model");
+const User = require("../models/User.model")
+const Business = require("../models/Business.model")
 
 //  PUT /reservations  -  Set the status of a reservation based on input of the restaurant
 router.put("/:resId/status", (req, res, next) => {
@@ -33,6 +35,30 @@ router.put("/:resId/status", (req, res, next) => {
     )
   });
 });
+
+router.post("/:businessId/new", (req, res)=>{
+  const {name, surname, day, hour, people, userId, status} = req.body
+  const {businessId} = req.params
+
+  Reservation.create({name, surname, day, hour, people, userId, businessId, status})
+  .then(newReservation => res
+    .status(200)
+    .json(
+      {
+        data: newReservation,
+        error: null,
+        message: "Reservation created successfully"
+      })
+    )
+  .catch(error=> res
+    .status(500)
+    .json({
+      data: null,
+      message : "Something went wrong",
+      error: error
+    }))
+})
+
 
 //  GET /api/tasks/:taskId  - Retrieves a specific task by id
 router.get("/tasks/:taskId", (req, res, next) => {
