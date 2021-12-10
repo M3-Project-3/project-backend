@@ -50,7 +50,7 @@ router.post("/:businessId/new", (req, res)=>{
   const {name, surname, date, hour, people, userId} = req.body
   const {businessId} = req.params
 
-  Reservation.create({name, surname, day, hour, people, userId, businessId})
+  Reservation.create({name, surname, date,  hour, people, userId, businessId})
   .then(newReservation => res
     .status(200)
     .json(
