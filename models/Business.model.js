@@ -13,7 +13,7 @@ const businessSchema = new Schema(
   menuMain: [{type: Object}],
   menuDeserts: [{type: Object}],
   priceRange: {type: String},
-  timetable: [{type: Object}],
+  timetable: [{type: String}],
   tables: {type: Number},
   pictures: [{
     type: String,
