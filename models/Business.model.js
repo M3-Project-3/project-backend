@@ -21,8 +21,7 @@ const businessSchema = new Schema(
       "",
   }],
   userType: {type: String, default: "business"},
-  isProfileComplete: {type: Boolean, default: false}
-  
+  isProfileComplete: {type: Boolean, default: false},
 });
 
 module.exports = model("Business", businessSchema);
