@@ -3,15 +3,14 @@ const router = express.Router();
 const mongoose = require("mongoose");
 
 const Reservation = require("../models/Reservation.model");
-const User = require("../models/User.model")
-const Business = require("../models/Business.model")
+
 
 //  PUT /reservations  -  Set the status of a reservation based on input of the restaurant
-router.put("/:resId/status", (req, res, next) => {
-  const { resId } = req.params;
+router.put("/:businessId/status", (req, res, next) => {
+  const { businessId } = req.params;
   const {status} = req.body
 
-  Reservation.findByIdAndUpdate(resId, { status: status})
+  Reservation.findByIdAndUpdate(businessId, { status: status})
   .then((newStatus)=>{res
     .status(200)
     .json(
