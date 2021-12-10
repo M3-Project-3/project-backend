@@ -6,11 +6,11 @@ const Reservation = require("../models/Reservation.model");
 
 
 //  PUT /reservations  -  Set the status of a reservation based on input of the restaurant
-router.put("/:businessId/status", (req, res, next) => {
-  const { businessId } = req.params;
+router.put("/:id/status", (req, res, next) => {
+  const { id } = req.params;
   const {status} = req.body
 
-  Reservation.findByIdAndUpdate(businessId, { status: status})
+  Reservation.findByIdAndUpdate(id, { status: status})
   .then((newStatus)=>{res
     .status(200)
     .json(
@@ -56,6 +56,15 @@ router.post("/:businessId/new", (req, res)=>{
       message : "Something went wrong",
       error: error
     }))
+})
+
+router.get("/:id", (req, res)=>{
+  const { id } = req.params;
+
+  Reservation.findById(id)
+    .then((reservation) => res.json(reservation))
+    .catch((error) => res.json(error));
+
 })
 
 
