@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
 const reservationSchema = new Schema({
-  day: {type: String},
+  date: {type: String},
   hour: [{type: String}],
   people: {type: Number},
   userId: { type: Schema.Types.ObjectId, ref: "User" },
