@@ -7,7 +7,7 @@ const Reservations = require("../models/Reservation.model");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 
-//  POST /business/id/create  -  Creates a new business
+//  PUT /business/id/edit  -  Update a business
 router.put("/:id/edit", (req, res, next) => {
   const {
     name,
@@ -18,10 +18,11 @@ router.put("/:id/edit", (req, res, next) => {
     menuMain,
     menuDeserts,
     priceRange,
-    timetable,
     tables,
     pictures,
-  } = req.body;
+  } = req.body.formState;
+  const timetable = req.body.hourRanges
+  console.log(req.body)
   const { id } = req.params;
   Business.findByIdAndUpdate(
     id,
@@ -34,10 +35,10 @@ router.put("/:id/edit", (req, res, next) => {
       menuMain,
       menuDeserts,
       priceRange,
-      timetable,
       tables,
       pictures,
       isProfileComplete: true,
+      timetable
     },
     { new: true }
   )
