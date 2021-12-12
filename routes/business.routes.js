@@ -124,6 +124,44 @@ router.get("/:id/reservations", (req, res) => {
     });
 });
 
+//Search by name query
+router.get("/searchByName", async (req, res) => {
+  try {
+    const {name} = req.query
+    const {resType} = req.query
+    console.log(req.query)
+    const newB = await Business.find({ name: {$regex: name, $options: "i" }})
+    res.status(200).json(newB);
+} catch (err) {
+    console.log(err);
+}
+});
+
+router.get("/searchResType", async (req, res) => {
+  try {
+   
+    const {resType} = req.query
+    const newB = await Business.find({ resType: { $in: resType } })
+    res.status(200).json(newB);
+} catch (err) {
+    console.log(err);
+}
+});
+
+router.get("/searchFoodType", async (req, res) => {
+  try {
+   
+    const {foodType} = req.query
+    const newB = await Business.find({ foodType: { $in: foodType } })
+    res.status(200).json(newB);
+} catch (err) {
+    console.log(err);
+}
+});
+
+
+
+
 //  GET /business/  -  Get all businesses
 router.get("/", (req, res, next) => {
   Business.find()
