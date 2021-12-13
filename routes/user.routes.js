@@ -96,10 +96,12 @@ router.put("/:userId/edit", (req,res)=>{
 // Get all reservations from a user
 router.get('/:id/reservations', (req, res)=>{
   const {id} = req.params
-  console.log(id)
-
-  Reservations.find({user: id}).populate("user")
-  .then((userReservations)=>{res
+  
+  Reservations.find({userId: id}).populate("userId")
+  .then((userReservations)=>{
+    
+    console.log("aaaaaaaaaaaaaa",userReservations)
+    res
     .status(200)
     .json(
       {

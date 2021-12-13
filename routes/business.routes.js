@@ -122,11 +122,12 @@ router.put("/:id/delete", (req, res, next) => {
 });
 // Get all reservations from a business
 router.get("/:id/reservations", (req, res) => {
-  const { id } = req.params;
+  const {id}  = req.params;
+  console.log("iddadsadasddsa",id)
 
 
-  Reservations.find({ business: id })
-    .populate("business")
+  Reservations.find({ businessId: id })
+    .populate("businessId")
     .then((businessReservations) => {
       res.status(200).json({
         data: businessReservations,
@@ -144,6 +145,23 @@ router.get("/:id/reservations", (req, res) => {
       });
     });
 });
+
+//Search by name query
+router.get("/search", async (req, res) => {
+  try {
+    const {name, resType, foodType} = req.query
+    const regex = new RegExp(req.query.name, "i");
+
+    const newB = await Business.find({$or: [  { name: regex  }, { resType: { $in: regex } }, { foodType: { $in: regex } }]})
+
+    res.status(200).json(newB);
+} catch (err) {
+    console.log(err);
+}
+
+});
+
+
 
 //  GET /business/  -  Get all businesses
 router.get("/", (req, res, next) => {
