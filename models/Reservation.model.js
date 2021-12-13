@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
 const reservationSchema = new Schema({
+  name: {type: String},
+  surname: {type: String},
   date: {type: Object},
   hour: {type: String},
   people: {type: Number},

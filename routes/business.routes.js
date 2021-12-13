@@ -127,7 +127,7 @@ router.get("/:id/reservations", (req, res) => {
 
 
   Reservations.find({ businessId: id })
-    .populate("business")
+    .populate("businessId")
     .then((businessReservations) => {
       res.status(200).json({
         data: businessReservations,
