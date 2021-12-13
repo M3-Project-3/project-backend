@@ -127,7 +127,7 @@ router.get('/:id/reservations', (req, res)=>{
 
 router.get("/:userId", (req,res)=>{
     const {userId} = req.params
-
+ 
     //Checks if received param is an valid ID
     if (!mongoose.Types.ObjectId.isValid(userId)) {
         res.status(400).json({ message: "Specified id is not valid" });
