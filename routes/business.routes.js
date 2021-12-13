@@ -145,6 +145,23 @@ router.get("/:id/reservations", (req, res) => {
     });
 });
 
+//Search by name query
+router.get("/search", async (req, res) => {
+  try {
+    const {name, resType, foodType} = req.query
+    const regex = new RegExp(req.query.name, "i");
+
+    const newB = await Business.find({$or: [  { name: regex  }, { resType: { $in: regex } }, { foodType: { $in: regex } }]})
+
+    res.status(200).json(newB);
+} catch (err) {
+    console.log(err);
+}
+
+});
+
+
+
 //  GET /business/  -  Get all businesses
 router.get("/", (req, res, next) => {
   Business.find()
