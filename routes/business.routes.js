@@ -14,6 +14,7 @@ router.put("/:id/edit", (req, res, next) => {
     address,
     tables,
     pictures,
+    description
   } = req.body.formState;
   const timetable = req.body.hourRanges
   const resType = req.body.resType
@@ -23,7 +24,7 @@ router.put("/:id/edit", (req, res, next) => {
   const menuMain = req.body.menuMain
   const menuDeserts = req.body.menuDeserts
   let isProfileComplete= false
-  let priceRange = "Price range still not available"
+  let priceRange = "Price range unavailable"
   const average = (list) =>{
  
     if(list.length > 0){
@@ -43,7 +44,7 @@ router.put("/:id/edit", (req, res, next) => {
     
   }
 
-  if(name, address, resType, foodType, menuStarters, menuMain, menuDeserts, priceRange, pictures, timetable) isProfileComplete === true
+  if(name, address, resType, foodType, menuStarters, menuMain, menuDeserts, priceRange, pictures, timetable, description) isProfileComplete === true
   Business.findByIdAndUpdate(
     id,
     {
@@ -58,7 +59,8 @@ router.put("/:id/edit", (req, res, next) => {
       tables,
       pictures,
       isProfileComplete,
-      timetable
+      timetable,
+      description
     },
     { new: true }
   )
@@ -83,7 +85,6 @@ router.put("/:id/edit", (req, res, next) => {
 //  GET /business/id/details -  Retrieves the details of a business
 router.get("/:id/details", (req, res, next) => {
   const { id } = req.params;
-
   Business.findById(id)
     .then((restaurantDetails) => {
       res.status(200).json({
@@ -122,11 +123,10 @@ router.put("/:id/delete", (req, res, next) => {
 });
 // Get all reservations from a business
 router.get("/:id/reservations", (req, res) => {
-  const { id } = req.params;
-
-
-  Reservations.find({ business: id })
-    .populate("business")
+  const {id} = req.params;
+  Reservations.find({businessId: id})
+    .populate("userId")
+    .populate("businessId")
     .then((businessReservations) => {
       res.status(200).json({
         data: businessReservations,
@@ -145,6 +145,31 @@ router.get("/:id/reservations", (req, res) => {
     });
 });
 
+router.post('/:resId/review', (req, res)=>{
+  const {resId} = req.params
+  const {review, owner, date} = req.body
+  const reviews = {review: review.reviewText, rating: review.rating, date: date, owner: owner}
+  Business.findByIdAndUpdate(resId, {
+    $push: { reviews: reviews }
+  })
+  .then((business) => {
+    res.status(200).json({
+      data: business,
+      message: "Review added successfully",
+      error: null,
+      pagination: null,
+    });
+  })
+  .catch((error) => {
+    res.status(200).json({
+      data: null,
+      message: "Something went wrong",
+      error: error,
+      pagination: null,
+    });
+  });
+})
+
 //Search by name query
 router.get("/search", async (req, res) => {
   try {
@@ -159,8 +184,6 @@ router.get("/search", async (req, res) => {
 }
 
 });
-
-
 
 //  GET /business/  -  Get all businesses
 router.get("/", (req, res, next) => {
