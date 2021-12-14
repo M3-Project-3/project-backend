@@ -85,7 +85,6 @@ router.put("/:id/edit", (req, res, next) => {
 //  GET /business/id/details -  Retrieves the details of a business
 router.get("/:id/details", (req, res, next) => {
   const { id } = req.params;
-
   Business.findById(id)
     .then((restaurantDetails) => {
       res.status(200).json({
@@ -124,11 +123,10 @@ router.put("/:id/delete", (req, res, next) => {
 });
 // Get all reservations from a business
 router.get("/:id/reservations", (req, res) => {
-  const {id}  = req.params;
-
-  Reservations.find({ businessId: id })
-    .populate("businessId")
+  const {id} = req.params;
+  Reservations.find({businessId: id})
     .populate("userId")
+    .populate("businessId")
     .then((businessReservations) => {
       res.status(200).json({
         data: businessReservations,
