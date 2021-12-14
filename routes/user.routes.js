@@ -58,15 +58,18 @@ router.route("/:userId/favourites/:resId")
     User
     .findByIdAndUpdate(userId, { $pull: {favourites: resId}}, {new: true} )
     .populate("favourites")
-    .then(user => res
+    .then(user =>{
+      console.log(user.favourites)
+      res
+      
       .status(200)
       .json(
         {
-          data: user,
+          data: user.favourites,
           error: null,
           message: "Favourite deleted from user"
         })
-      )
+    })
     .catch(error=> res
       .status(500)
       .json({
