@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 
 const User = require("../models/User.model")
-const Business = require("../models/Business.model")
+
 const Reservations = require('../models/Reservation.model')
 
 
@@ -49,12 +49,13 @@ router.route("/:userId/favourites")
           }))
       
     })
-    .put((req,res)=>{
+router.put("/:userId/favourites/:resId",(req,res)=>{
         const { userId } = req.params
-        const {favouritesId } = req.body
+        const {resId } = req.params
+        console.log(resId)
         
         User
-          .findByIdAndUpdate(userId, { $addToSet: {favourites: favouritesId} }, {new: true} )
+          .findByIdAndUpdate(userId, { $addToSet: {favourites: resId} }, {new: true} )
           .populate("favourites")
           .then(userUpdatedFavourites => res
             .status(200)
@@ -72,7 +73,7 @@ router.route("/:userId/favourites")
               message : "Something went wrong",
               error: error
           }))
-    })
+})
 
 //UPDATE USER 
 router.put("/:userId/edit", (req,res)=>{
