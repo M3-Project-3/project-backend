@@ -37,10 +37,10 @@ router.put("/:id/edit", (req, res, next) => {
   }
   if(average(menuStarters) !== undefined && average(menuMain) !== undefined && average(menuDeserts) !== undefined ){
     costAverageMenu = (average(menuStarters)+average(menuMain)+average(menuDeserts))
-    if(costAverageMenu<=15) priceRange = "*"
-    if(costAverageMenu>15 && costAverageMenu<=30) priceRange = "**"
-    if(costAverageMenu>30 && costAverageMenu<=50) priceRange = "***"
-    if(costAverageMenu>50) priceRange = "****"
+    if(costAverageMenu<=15) priceRange = "$"
+    if(costAverageMenu>15 && costAverageMenu<=30) priceRange = "$$"
+    if(costAverageMenu>30 && costAverageMenu<=50) priceRange = "$$$"
+    if(costAverageMenu>50) priceRange = "$$$$"
     
   }
 
