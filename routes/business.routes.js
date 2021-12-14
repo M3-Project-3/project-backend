@@ -24,7 +24,7 @@ router.put("/:id/edit", (req, res, next) => {
   const menuMain = req.body.menuMain
   const menuDeserts = req.body.menuDeserts
   let isProfileComplete= false
-  let priceRange = "Price range still not available"
+  let priceRange = "Price range unavailable"
   const average = (list) =>{
  
     if(list.length > 0){
@@ -128,6 +128,7 @@ router.get("/:id/reservations", (req, res) => {
 
   Reservations.find({ businessId: id })
     .populate("businessId")
+    .populate("userId")
     .then((businessReservations) => {
       res.status(200).json({
         data: businessReservations,

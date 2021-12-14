@@ -94,35 +94,33 @@ router.put("/:userId/edit", (req,res)=>{
 })
 
 // Get all reservations from a user
-router.get('/:id/reservations', (req, res)=>{
-  const {id} = req.params
-  
-  Reservations.find({userId: id}).populate("userId")
-  .then((userReservations)=>{
-    
-    console.log("aaaaaaaaaaaaaa",userReservations)
+router.get('/:id/reservations', async (req, res)=>{
+  try{
+
+    const {id} = req.params
+    const reservations = await Reservations.find({userId: id}).populate("userId").populate('businessId')
     res
     .status(200)
     .json(
       {
-        data: userReservations,
+        data: reservations,
         message: "Reservations info loaded successfully",
         error: null,
         pagination: null
       }
-    )
-  })
-  .catch((error)=>{res
-    .status(200)
+      )
+    }
+  catch(error){
+    res
+    .status(500)
     .json(
       {
         data: null,
         message: "Something went wrong",
         error: error,
         pagination: null
-      }
-    )
-  });
+      })
+    }
 })
 
 //GET USER BY ID

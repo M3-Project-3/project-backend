@@ -15,10 +15,10 @@ router.route("/:id")
       .catch((error) => res.json(error));
 
   })
-
   .put( (req, res, next) => {
     const { id } = req.params;
-    const {status} = req.body
+    const status = req.body.status
+    console.log("adsddadsdsadas",req.body)
 
     Reservation.findByIdAndUpdate(id, { status: status})
     .then((newStatus)=>{res
