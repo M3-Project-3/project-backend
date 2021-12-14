@@ -25,55 +25,57 @@ router.route("/:userId/favourites")
 
 
     })
-    .delete((req, res)=>{
-        const { userId } = req.params
-        const {favouritesId } = req.body
-        User
-        .findByIdAndUpdate(userId, { $pull: {favourites: favouritesId}}, {new: true} )
-        .populate("favourites")
-        .then(user => res
-          .status(200)
-          .json(
-            {
-              data: user,
-              error: null,
-              message: "Favourite deleted from user"
-            })
-          )
-        .catch(error=> res
-          .status(500)
-          .json({
-            data: null,
-            message : "Something went wrong",
-            error: error
-          }))
-      
+  
+router.route("/:userId/favourites/:resId")
+    .put((req,res)=>{
+            const { userId } = req.params
+            const {resId } = req.params
+            console.log(resId)
+            
+            User
+              .findByIdAndUpdate(userId, { $addToSet: {favourites: resId} }, {new: true} )
+              .populate("favourites")
+              .then(userUpdatedFavourites => res
+                .status(200)
+                .json(
+                  {
+                    data: userUpdatedFavourites,
+                    error: null,
+                    message: "Favourite added to user"
+                  })
+                )
+              .catch(error=> res
+                .status(500)
+                .json({
+                  data: null,
+                  message : "Something went wrong",
+                  error: error
+              }))
     })
-router.put("/:userId/favourites/:resId",(req,res)=>{
-        const { userId } = req.params
-        const {resId } = req.params
-        console.log(resId)
-        
-        User
-          .findByIdAndUpdate(userId, { $addToSet: {favourites: resId} }, {new: true} )
-          .populate("favourites")
-          .then(userUpdatedFavourites => res
-            .status(200)
-            .json(
-              {
-                data: userUpdatedFavourites,
-                error: null,
-                message: "Favourite added to user"
-              })
-            )
-          .catch(error=> res
-            .status(500)
-            .json({
-              data: null,
-              message : "Something went wrong",
-              error: error
-          }))
-})
+  .delete((req, res)=>{
+    const { userId } = req.params
+    const {resId } = req.params
+    User
+    .findByIdAndUpdate(userId, { $pull: {favourites: resId}}, {new: true} )
+    .populate("favourites")
+    .then(user => res
+      .status(200)
+      .json(
+        {
+          data: user,
+          error: null,
+          message: "Favourite deleted from user"
+        })
+      )
+    .catch(error=> res
+      .status(500)
+      .json({
+        data: null,
+        message : "Something went wrong",
+        error: error
+      }))
+
+  })
 
 //UPDATE USER 
 router.put("/:userId/edit", (req,res)=>{
