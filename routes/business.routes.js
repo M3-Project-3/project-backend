@@ -46,7 +46,7 @@ router.put("/:id/edit", (req, res, next) => {
     
   }
 
-  if(name, address, resType, foodType, menuStarters, menuMain, menuDeserts, priceRange, pictures, timetable, description) isProfileComplete === true
+  if(name && address && resType && foodType && menuStarters && menuMain && menuDeserts && priceRange && pictures && timetable && description) isProfileComplete = true
   Business.findByIdAndUpdate(
     id,
     {
