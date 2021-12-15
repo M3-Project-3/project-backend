@@ -8,15 +8,18 @@ const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 
 //  PUT /business/id/edit  -  Update a business
-router.put("/:id/edit", (req, res, next) => {
+router.put("/:id/edit", async (req, res, next) => {
+  try{
+  
   const {
     name,
     address,
-    tables,
     pictures,
     description
   } = req.body.formState;
+
   const timetable = req.body.hourRanges
+  console.log(",lolololololololololol",timetable)
   const resType = req.body.resType
   const foodType = req.body.foodType
   const { id } = req.params;
@@ -24,7 +27,7 @@ router.put("/:id/edit", (req, res, next) => {
   const menuMain = req.body.menuMain
   const menuDeserts = req.body.menuDeserts
   let isProfileComplete= false
-  let priceRange = "Price range unavailable"
+  let priceRange = "unavailable"
   const average = (list) =>{
  
     if(list.length > 0){
@@ -44,8 +47,8 @@ router.put("/:id/edit", (req, res, next) => {
     
   }
 
-  if(name, address, resType, foodType, menuStarters, menuMain, menuDeserts, priceRange, pictures, timetable, description) isProfileComplete === true
-  Business.findByIdAndUpdate(
+  if(name && address && resType && foodType && menuStarters && menuMain && menuDeserts && priceRange && pictures && timetable && description) isProfileComplete = true
+  const updateBusiness = await Business.findByIdAndUpdate(
     id,
     {
       name,
@@ -56,7 +59,6 @@ router.put("/:id/edit", (req, res, next) => {
       menuMain,
       menuDeserts,
       priceRange,
-      tables,
       pictures,
       isProfileComplete,
       timetable,
@@ -64,110 +66,111 @@ router.put("/:id/edit", (req, res, next) => {
     },
     { new: true }
   )
-    .then((restaurant) => {
-      res.status(200).json({
-        data: restaurant,
-        message: "Restaurant info updated successfully",
-        error: null,
-        pagination: null,
-      });
-    })
-    .catch((error) => {
-      res.status(200).json({
-        data: null,
-        message: "Something went wrong",
-        error: error,
-        pagination: null,
-      });
-    });
-});
-
-//  GET /business/id/details -  Retrieves the details of a business
-router.get("/:id/details", (req, res, next) => {
-  const { id } = req.params;
-  Business.findById(id)
-    .then((restaurantDetails) => {
-      res.status(200).json({
-        data: restaurantDetails,
-        message: "Restaurant info loaded successfully",
-        error: null,
-        pagination: null,
-      });
-    })
-    .catch((error) => {
-      res.status(200).json({
-        data: null,
-        message: "Something went wrong",
-        error: error,
-        pagination: null,
-      });
-    });
-});
-
-// PUT  /:id/disable  -  Disables a specific business by id
-router.put("/:id/delete", (req, res, next) => {
-  const { id } = req.params;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    res.status(400).json({ message: "Specified id is not valid" });
-    return;
+  res.status(200).json({
+    data: updateBusiness,
+    message: "Restaurant info updated successfully",
+    error: null,
+    pagination: null,
+  });
   }
-
-  Business.findByIdAndUpdate(id, { isProfileComplete: false })
-    .then((response) =>
-      res.json({
-        message: `Business with ${id} is removed successfully.`,
-      })
-    )
-    .catch((error) => res.json(error));
-});
-// Get all reservations from a business
-router.get("/:id/reservations", (req, res) => {
-  const {id} = req.params;
-  Reservations.find({businessId: id})
-    .populate("userId")
-    .populate("businessId")
-    .then((businessReservations) => {
-      res.status(200).json({
-        data: businessReservations,
-        message: "Reservations info loaded successfully",
-        error: null,
-        pagination: null,
-      });
-    })
-    .catch((error) => {
-      res.status(200).json({
-        data: null,
-        message: "Something went wrong",
-        error: error,
-        pagination: null,
-      });
-    });
-});
-
-router.post('/:resId/review', (req, res)=>{
-  const {resId} = req.params
-  const {review, owner, date} = req.body
-  const reviews = {review: review.reviewText, rating: review.rating, date: date, owner: owner}
-  Business.findByIdAndUpdate(resId, {
-    $push: { reviews: reviews }
-  })
-  .then((business) => {
-    res.status(200).json({
-      data: business,
-      message: "Review added successfully",
-      error: null,
-      pagination: null,
-    });
-  })
-  .catch((error) => {
+  catch(error){
     res.status(200).json({
       data: null,
       message: "Something went wrong",
       error: error,
       pagination: null,
     });
-  });
+  }
+});
+
+//  GET /business/id/details -  Retrieves the details of a business
+router.get("/:id/details", async (req, res, next) => {
+  try{
+    const { id } = req.params;
+    findBusiness = await Business.findById(id)
+    res.status(200).json({
+      data: findBusiness,
+      message: "Restaurant info loaded successfully",
+      error: null,
+      pagination: null,
+    })
+  }
+  catch(error){
+    res.status(200).json({
+      data: null,
+      message: "Something went wrong",
+      error: error,
+      pagination: null,
+    });
+  } 
+});
+
+// PUT  /:id/disable  -  Disables a specific business by id
+router.put("/:id/delete", async (req, res, next) => {
+  try{
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+    res.status(400).json({ message: "Specified id is not valid" });
+    return;
+    }
+    updateBusiness = await Business.findByIdAndUpdate(id, { isProfileComplete: false })
+    res.json({
+      message: `Business with ${id} is removed successfully.`,
+    })
+  }
+  catch(error){
+    res.json(error)
+  }
+});
+
+// Get all reservations from a business
+router.get("/:id/reservations", async (req, res) => {
+  try{
+    const {id} = req.params;
+    getAllReservations = await Reservations.find({businessId: id})
+      .populate("userId")
+      .populate("businessId")
+      res.status(200).json({
+        data: getAllReservations,
+        message: "Reservations info loaded successfully",
+        error: null,
+        pagination: null,
+      });
+  }
+   catch(error){
+     res.status(200).json({
+       data: null,
+       message: "Something went wrong",
+       error: error,
+       pagination: null,
+     });
+   } 
+});
+
+router.post('/:resId/review', async (req, res)=>{
+  try{
+    const {resId} = req.params
+    const {review, owner, date} = req.body
+    const reviews = {review: review.reviewText, rating: review.rating, date: date, owner: owner}
+    setReview = await Business.findByIdAndUpdate(resId, {
+      $push: { reviews: reviews }
+    })
+    res.status(200).json({
+      data: setReview,
+      message: "Review added successfully",
+      error: null,
+      pagination: null,
+    });
+  }
+  catch(error){
+    res.status(200).json({
+      data: null,
+      message: "Something went wrong",
+      error: error,
+      pagination: null,
+    });
+  }
 })
 
 //Search by name query
@@ -186,24 +189,24 @@ router.get("/search", async (req, res) => {
 });
 
 //  GET /business/  -  Get all businesses
-router.get("/", (req, res, next) => {
-  Business.find()
-    .then((businesses) => {
-      res.status(200).json({
-        data: businesses,
-        message: "All businesses info retrieved successfully",
-        error: null,
-        pagination: null,
-      });
-    })
-    .catch((error) => {
-      res.status(200).json({
-        data: null,
-        message: "Something went wrong",
-        error: error,
-        pagination: null,
-      });
+router.get("/", async (req, res, next) => {
+  try{
+    allBusiness = await Business.find()
+    res.status(200).json({
+      data: allBusiness,
+      message: "All businesses info retrieved successfully",
+      error: null,
+      pagination: null,
     });
+  }
+  catch(error){
+    res.status(200).json({
+      data: null,
+      message: "Something went wrong",
+      error: error,
+      pagination: null,
+    });
+  }
 });
 
 module.exports = router;
