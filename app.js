@@ -4,9 +4,14 @@ const express = require("express");
 
 const { isAuthenticated } = require("./middleware/jwt.middleware");
 
-
 const app = express();
 require("./config")(app);
+
+// cloudinary routes
+const index = require('./routes/index');
+app.use('/', index); 
+const picturesRouter = require('./routes/business.routes'); // <== has to be added
+app.use('/api', picturesRouter); // <== has to be added
 
 
 // 👇 Start handling routes here
