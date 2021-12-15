@@ -223,13 +223,13 @@ Business.findOne({ email })
     const payload = { _id, email, name };
 
     // Create and sign the token
-    const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
+    const authTokenBusiness = jwt.sign(payload, process.env.TOKEN_SECRET, {
       algorithm: "HS256",
       expiresIn: "6h",
     });
 
     // Send the token as the response
-    res.status(200).json({ authToken: authToken });
+    res.status(200).json({ authTokenBusiness : authTokenBusiness });
   } else {
     res.status(401).json({ message: "Unable to authenticate the business" });
   }

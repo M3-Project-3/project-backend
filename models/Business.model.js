@@ -14,7 +14,6 @@ const businessSchema = new Schema(
   menuDeserts: [{type: Object}],
   priceRange: {type: String},
   timetable: [{type: String}],
-  tables: {type: Number},
   description: {type: String},
   pictures: [{
     type: String,
