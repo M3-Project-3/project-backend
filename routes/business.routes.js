@@ -14,7 +14,6 @@ router.put("/:id/edit", (req, res, next) => {
   const {
     name,
     address,
-    tables,
     pictures,
     description
   } = req.body.formState;
@@ -58,7 +57,6 @@ router.put("/:id/edit", (req, res, next) => {
       menuMain,
       menuDeserts,
       priceRange,
-      tables,
       pictures,
       isProfileComplete,
       timetable,
