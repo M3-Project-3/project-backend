@@ -6,6 +6,8 @@ const Business = require("../models/Business.model");
 const Reservations = require("../models/Reservation.model");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 
+const fileUploader = require("../config/cloudinary.config");
+
 
 //  PUT /business/id/edit  -  Update a business
 router.put("/:id/edit", async (req, res, next) => {
@@ -208,5 +210,27 @@ router.get("/", async (req, res, next) => {
     });
   }
 });
+
+router.post("/upload", fileUploader.single("pictures"), (req, res, next) => {
+
+  if (!req.file) {
+    next(new Error("No file uploaded!"));
+    return;
+  }
+    res.json({ secure_url: req.file.path });
+});
+
+router.post('/businesses', (req, res, next) => {
+  pictures.create(req.body)
+    .then(createdPictures => {
+      console.log('Created new picture: ', createdPictures);
+      res.status(200).json(createdPictures);
+    })
+    .catch(err => next(err));
+});
+
+
+
+
 
 module.exports = router;
