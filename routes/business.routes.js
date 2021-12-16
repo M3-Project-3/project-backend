@@ -6,13 +6,14 @@ const Business = require("../models/Business.model");
 const Reservations = require("../models/Reservation.model");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 
+const fileUploader = require("../config/cloudinary.config");
+
 
 //  PUT /business/id/edit  -  Update a business
 router.put("/:id/edit", (req, res, next) => {
   const {
     name,
     address,
-    tables,
     pictures,
     description
   } = req.body.formState;
@@ -24,7 +25,7 @@ router.put("/:id/edit", (req, res, next) => {
   const menuMain = req.body.menuMain
   const menuDeserts = req.body.menuDeserts
   let isProfileComplete= false
-  let priceRange = "Price range still not available"
+  let priceRange = "unavailable"
   const average = (list) =>{
  
     if(list.length > 0){
@@ -41,10 +42,12 @@ router.put("/:id/edit", (req, res, next) => {
     if(costAverageMenu>15 && costAverageMenu<=30) priceRange = "$$"
     if(costAverageMenu>30 && costAverageMenu<=50) priceRange = "$$$"
     if(costAverageMenu>50) priceRange = "$$$$"
-    
   }
 
-  if(name, address, resType, foodType, menuStarters, menuMain, menuDeserts, priceRange, pictures, timetable, description) isProfileComplete === true
+  if(name && address && resType.length > 0 && foodType.length > 0&& menuStarters.length > 0 && menuMain.length > 0 && menuDeserts.length > 0 && priceRange && pictures.length > 0 && timetable.length > 0 && description) {
+    isProfileComplete = true
+    console.log("menuStarters", menuStarters)
+  }
   Business.findByIdAndUpdate(
     id,
     {
@@ -56,7 +59,6 @@ router.put("/:id/edit", (req, res, next) => {
       menuMain,
       menuDeserts,
       priceRange,
-      tables,
       pictures,
       isProfileComplete,
       timetable,
@@ -85,7 +87,6 @@ router.put("/:id/edit", (req, res, next) => {
 //  GET /business/id/details -  Retrieves the details of a business
 router.get("/:id/details", (req, res, next) => {
   const { id } = req.params;
-
   Business.findById(id)
     .then((restaurantDetails) => {
       res.status(200).json({
@@ -124,9 +125,9 @@ router.put("/:id/delete", (req, res, next) => {
 });
 // Get all reservations from a business
 router.get("/:id/reservations", (req, res) => {
-  const {id}  = req.params;
-
-  Reservations.find({ businessId: id })
+  const {id} = req.params;
+  Reservations.find({businessId: id})
+    .populate("userId")
     .populate("businessId")
     .then((businessReservations) => {
       res.status(200).json({
@@ -206,5 +207,27 @@ router.get("/", (req, res, next) => {
       });
     });
 });
+
+router.post("/upload", fileUploader.single("pictures"), (req, res, next) => {
+
+  if (!req.file) {
+    next(new Error("No file uploaded!"));
+    return;
+  }
+    res.json({ secure_url: req.file.path });
+});
+
+router.post('/businesses', (req, res, next) => {
+  pictures.create(req.body)
+    .then(createdPictures => {
+      console.log('Created new picture: ', createdPictures);
+      res.status(200).json(createdPictures);
+    })
+    .catch(err => next(err));
+});
+
+
+
+
 
 module.exports = router;
