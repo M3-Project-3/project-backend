@@ -14,7 +14,6 @@ router.put("/:id/edit", (req, res, next) => {
   const {
     name,
     address,
-    tables,
     pictures,
     description
   } = req.body.formState;
@@ -26,7 +25,7 @@ router.put("/:id/edit", (req, res, next) => {
   const menuMain = req.body.menuMain
   const menuDeserts = req.body.menuDeserts
   let isProfileComplete= false
-  let priceRange = "Price range unavailable"
+  let priceRange = "unavailable"
   const average = (list) =>{
  
     if(list.length > 0){
@@ -43,10 +42,12 @@ router.put("/:id/edit", (req, res, next) => {
     if(costAverageMenu>15 && costAverageMenu<=30) priceRange = "$$"
     if(costAverageMenu>30 && costAverageMenu<=50) priceRange = "$$$"
     if(costAverageMenu>50) priceRange = "$$$$"
-    
   }
 
-  if(name && address && resType && foodType && menuStarters && menuMain && menuDeserts && priceRange && pictures && timetable && description) isProfileComplete = true
+  if(name && address && resType.length > 0 && foodType.length > 0&& menuStarters.length > 0 && menuMain.length > 0 && menuDeserts.length > 0 && priceRange && pictures.length > 0 && timetable.length > 0 && description) {
+    isProfileComplete = true
+    console.log("menuStarters", menuStarters)
+  }
   Business.findByIdAndUpdate(
     id,
     {
@@ -58,7 +59,6 @@ router.put("/:id/edit", (req, res, next) => {
       menuMain,
       menuDeserts,
       priceRange,
-      tables,
       pictures,
       isProfileComplete,
       timetable,
