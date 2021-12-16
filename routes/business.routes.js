@@ -25,7 +25,7 @@ router.put("/:id/edit", (req, res, next) => {
   const menuMain = req.body.menuMain
   const menuDeserts = req.body.menuDeserts
   let isProfileComplete= false
-  let priceRange = "Price range unavailable"
+  let priceRange = "unavailable"
   const average = (list) =>{
  
     if(list.length > 0){
