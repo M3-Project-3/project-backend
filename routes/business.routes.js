@@ -86,6 +86,7 @@ router.get("/:id/details", (req, res, next) => {
 
   Business.findById(id)
     .then((restaurantDetails) => {
+      restaurantDetails.password = undefined
       res.status(200).json({
         data: restaurantDetails,
         message: "Restaurant info loaded successfully",
