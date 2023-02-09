@@ -18,7 +18,10 @@ module.exports = (app) => {
   app.set("trust proxy", 1);
 
   app.use(
-    cors()
+    cors({
+      origin: [process.env.FRONTEND_DOMAIN, "https://mesa-app.netlify.app/"],
+      methods: ['GET','POST','DELETE','UPDATE','PUT']
+    })
   );
 
   // In development environment the app logs
