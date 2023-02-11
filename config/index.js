@@ -25,8 +25,7 @@ module.exports = (app) => {
   
   app.use(
     cors({
-      origin: ['https://mesa-app.netlify.app/'],
-      methods: ['GET','POST','DELETE','UPDATE','PUT']
+      origin: 'https://mesa-app.netlify.app/'
     })
   );
 
